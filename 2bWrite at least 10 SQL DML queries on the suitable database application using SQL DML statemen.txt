@@ -1,0 +1,49 @@
+show databases;
+
+use emp;
+
+create table emp_info(emp_id int(30) primary key ,emp_name varchar(40),emp_salary int(40),address varchar(50));
+
+desc emp_info;
+
+insert into emp_info values(101,'Amay',45000,'pune'),(102,'avi',50000,'chinchwad'),(103,'sunny ',43000,'noida'),(104,'arnav',65000,'mumbai');
+
+select * from emp_info;
+
+delete from emp_info where address='noida';
+
+select * from emp_info;
+
+update emp_info set emp_name='shruti' where emp_id=101;
+
+select * from emp_info;
+
+select address ,emp_name from emp_info;
+
+select * from emp_info order by emp_name ASC;
+
+select * from emp_info where emp_name like '%v';
+
+select * from emp_info where emp_name like 'a%';
+
+select distinct emp_id from emp_info;
+
+select emp_name from emp_info where emp_name in ('avi','arnav');
+
+select * from emp_info;
+
+select * from emp_info where emp_name is null; 
+
+select avg(emp_salary) from emp_info;
+
+select min(emp_salary) from emp_info;
+
+select max(emp_salary) from emp_info;
+
+select count(emp_salary) from emp_info;
+
+select sum(emp_salary) from emp_info;
+
+select emp_name, sum(emp_salary) from emp_info group by emp_name;
+
+select emp_name, sum(emp_salary) from emp_info group by emp_name having sum(emp_salary)<55000;

@@ -1,0 +1,41 @@
+SHOW DATABASES;
+
+CREATE DATABASE info;
+
+SHOW DATABASES;
+
+USE info;
+
+CREATE TABLE student (roll_no INT(30) PRIMARY KEY,name VARCHAR(40),age INT(30));
+
+DESC student;
+
+CREATE TABLE stud (name VARCHAR(40) NOT NULL);
+
+ALTER TABLE student ADD Address VARCHAR(30);
+
+DESC student;
+
+ALTER TABLE student MODIFY age INT(5);
+
+DESC student;
+
+ALTER TABLE student DROP COLUMN age;
+
+DESC student;
+
+CREATE VIEW v1 AS SELECT name, roll_no FROM student;
+
+SELECT * FROM v1;
+
+CREATE UNIQUE INDEX ind1 ON student(name, roll_no);
+
+SHOW INDEX FROM student;
+
+ALTER TABLE student ADD INDEX ind2(address);
+
+SHOW INDEX FROM student;
+
+DROP TABLE student;
+
+DESC student;

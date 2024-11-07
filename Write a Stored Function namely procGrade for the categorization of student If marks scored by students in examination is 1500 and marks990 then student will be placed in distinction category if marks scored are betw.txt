@@ -1,0 +1,59 @@
+-- Create Stud_Marks table
+CREATE TABLE Stud_Marks (
+    name VARCHAR2(50),
+    total_marks NUMBER
+);
+
+-- Insert sample data into Stud_Marks
+INSERT INTO Stud_Marks (name, total_marks) VALUES ('Alice', 1500);
+INSERT INTO Stud_Marks (name, total_marks) VALUES ('Bob', 920);
+INSERT INTO Stud_Marks (name, total_marks) VALUES ('Charlie', 850);
+INSERT INTO Stud_Marks (name, total_marks) VALUES ('David', 800);
+INSERT INTO Stud_Marks (name, total_marks) VALUES ('Raj', 980);
+
+-- Create Result table
+CREATE TABLE Result (
+    roll_number NUMBER PRIMARY KEY,
+    name VARCHAR2(50),
+    class VARCHAR2(30)
+);
+CREATE OR REPLACE FUNCTION proc_Grade(marks NUMBER) RETURN VARCHAR2 IS
+    grade VARCHAR2(30);
+BEGIN
+    IF marks >= 990 AND marks <= 1500 THEN
+        grade := 'Distinction';
+    ELSIF marks >= 900 AND marks < 990 THEN
+        grade := 'First Class';
+    ELSIF marks >= 825 AND marks < 900 THEN
+        grade := 'Higher Second Class';
+    ELSE
+        grade := 'No Category';
+    END IF;
+    RETURN grade;
+END proc_Grade;
+/
+-- Create a sequence for generating roll numbers
+CREATE SEQUENCE roll_seq
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+DECLARE
+    v_name VARCHAR2(50);
+    v_total_marks NUMBER;
+    v_class VARCHAR2(30);
+BEGIN
+    -- Cursor to select students and their marks
+    FOR student_record IN (SELECT name, total_marks FROM Stud_Marks) LOOP
+        v_name := student_record.name;
+        v_total_marks := student_record.total_marks;
+
+        -- Call the proc_Grade function to get the class category
+        v_class := proc_Grade(v_total_marks);
+
+        -- Insert into Result table using the sequence for roll number
+        INSERT INTO Result (roll_number, name, class) VALUES (roll_seq.NEXTVAL, v_name, v_class);
+    END LOOP;
+    COMMIT;
+END;
+/
+SELECT * FROM Result ORDER BY roll_number;

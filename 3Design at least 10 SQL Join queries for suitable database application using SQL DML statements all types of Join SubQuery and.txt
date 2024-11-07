@@ -1,0 +1,56 @@
+show databases;
+
+use info;
+
+show databases;
+
+show tables;
+
+CREATE TABLE order_details ( orderDetail_Id INT PRIMARY KEY, orderID INT, product_id INT, Quantity INT );
+
+INSERT INTO order_details (orderDetail_Id, orderID, product_id, Quantity) VALUES (1, 33004, 2, 12), (2, 234543, 4, 10), (3, 45433, 3, 15), (5, 76543, 5, 34);
+
+CREATE TABLE product ( product_id INT PRIMARY KEY, prod_Name VARCHAR(50), supplier_id INT, category_id INT, price DECIMAL(10, 2) );
+
+INSERT INTO product (product_id, prod_Name, supplier_id, category_id, price) VALUES (1, 'ram', 1, 2, 320), (2, 'Ravi', 3, 4, 4000), (3, 'Darshan', 4, 3, 5000), (4, 'tanmay', 5, 3, 200), (5, 'yash', 6, 5, 4000);
+
+select product_id,prod_Name,supplier_id,category_id,price from product;
+
+select orderDetail_Id,orderID,product_id,Quantity from order_details;
+
+select product.product_id,product.prod_Name,order_details.orderID from product left join order_details on product.product_id=order_details.product_id;
+
+select product.product_id,product.prod_Name,order_details.orderID from product RIGHT JOIN order_details on product.product_id= order_details.product_id;
+
+select product.product_id,product.prod_Name,order_details.orderID from product CROSS JOIN order_details on product.product_id= order_details.product_id;
+
+select prod_Name from product where product_id = ANY (select product_id from order_details where Quantity=10);
+
+select prod_Name from product where product_id = ANY (select product_id from order_details where Quantity < 10);
+
+select prod_Name from product where product_id = ANY (select product_id from order_details where Quantity>10);
+
+select All prod_Name from product where TRUE;
+
+select prod_Name from product where product_id=ALL (select product_id from order_details where Quantity=10);
+
+select prod_Name from product where product_id=ALL (select product_id from order_details where Quantity>10);
+
+select prod_Name from product where product_id=ALL (select product_id from order_details where Quantity<10);
+
+select * from product where product_id = ANY (select product_id from order_details);
+
+select * from product where product_id = ALL (select product_id from order_details);
+
+create view v12 as select prod_Name,price from product;
+
+select * from v12;
+
+select * from product;
+
+select * from order_details;
+
+update order_details set orderID=76543,product_id=1,Quantity=09 where orderDetail_Id;
+
+select * from order_details;
+

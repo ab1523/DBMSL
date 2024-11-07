@@ -1,0 +1,37 @@
+show dbs
+
+use payment_status
+
+db.stat.insertMany([
+    {C_id: "VH2415", Product: "Dark Chocolate", Amount: 150, Status: "Paid"},
+    {C_id: "VH2415", Product: "Choco Bakes", Amount: 145, Status: "Not Paid"},
+    {C_id: "VK1524", Product: "Ramen", Amount: 225, Status: "Paid"},
+    {C_id: "VH2415", Product: "Wine", Amount: 11500, Status: "Paid"},
+    {C_id: "VK1524", Product: "Biscuits", Amount: 475, Status: "Not Paid"}
+]);
+
+db.stat.find().pretty();
+
+db.stat.mapReduce(
+    function() { emit(this.C_id, this.Amount); },
+    function(key, values) { return Array.sum(values); },
+    { query: { "Status": "Not Paid" }, out: "Bill_Amount" }
+);
+
+db.Bill_Amount.find().pretty();
+
+var mapfun1 = function() { emit(this.C_id, this.Amount); };
+
+var reducefun1 = function(keyC_id, valueAmount) { return Array.sum(valueAmount); };
+
+db.stat.mapReduce(mapfun1, reducefun1, { out: "Map" });
+
+db.Map.find();
+
+db.stat.mapReduce(
+    function() { emit(this.C_id, this.Amount); },
+    function(key, values) { return Array.sum(values); },
+    { query: { "Status": "Not Paid" }, out: "Bill_Amount" }
+);
+
+db.Bill_Amount.find().pretty();
